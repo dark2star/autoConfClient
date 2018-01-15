@@ -6,6 +6,9 @@ import org.I0Itec.zkclient.ZkClient;
 import org.I0Itec.zkclient.exception.ZkMarshallingError;
 import org.I0Itec.zkclient.serialize.ZkSerializer;
 import org.haosapp.autoconf.util.CodeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -15,24 +18,27 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZKConfClient {
 
+    protected static final Logger log = LoggerFactory.getLogger(ZKConfClient.class);
+
     private static final Map<String, IZkDataListener> watchMap = new HashMap<String, IZkDataListener>();
     private static final List<String> fileList = new ArrayList<String>();
     private static ZkClient zkClient = null;
+    private static ZnodeEvent znodeEvent;
 
     private ZKConfClient(){}
 
     /**
      * 初始化配置
      * @param zkHost
-     * @param url
      * @param znodeEvent
      * @throws Exception
      */
-    public static synchronized void initZk(String zkHost, String url,final ZnodeEvent znodeEvent) throws Exception {
+    public static synchronized void initZk(String zkHost,final ZnodeEvent znodeEvent) throws Exception {
         if(zkClient != null){//保证只初始化一次
             return;
         }
 
+        ZKConfClient.znodeEvent = znodeEvent;
         boolean isStartError = true;
         boolean isLoadFromLocal = true;
         while (isStartError){
@@ -44,13 +50,13 @@ public class ZKConfClient {
                 if(isLoadFromLocal){
                     isLoadFromLocal = false;
                     if(znodeEvent.zkConnectFail()){
-                        System.out.println("开发者初始化操作调用成功");
+                        log.info("开发者初始化操作调用成功");
                     } else {
-                        System.out.println("开发者初始化操作调用失败");
+                        log.info("开发者初始化操作调用失败");
                     }
                 }
                 Thread.sleep(5000);
-                System.out.println("连接失败，重试。。。。。。");
+                log.error("连接失败，重试。。。。。。", e);
             }
         }
 
@@ -64,8 +70,10 @@ public class ZKConfClient {
                 return CodeUtils.unicodeToUtf8(new String(bytes));
             }
         });
+    }
 
-        zkClient.waitUntilExists(url, TimeUnit.DAYS,5);
+    public static void startWatch(String url){
+        zkClient.waitUntilExists(url, TimeUnit.DAYS,90);//等待znode创建的最长时间
 
         /**
          * 初始化
@@ -80,9 +88,8 @@ public class ZKConfClient {
             watchMap.put(path, iZkDataListener);
             String content = zkClient.readData(path);
             initMap.put(path, content);
-
             //输出所有的配置
-            System.out.println(path + "     =      "+ content);
+            log.info("path={},content={}",path ,content);
         }
         znodeEvent.init(initMap);
 
@@ -91,40 +98,9 @@ public class ZKConfClient {
             @Override
             public void handleChildChange(String parentPath, List<String> children) throws Exception {
                 if(children == null){
-                    System.out.println("<" + parentPath + "> is deleted");
+                    log.info("{}已删除",parentPath);
                     return;
                 }
-
-                //TODO: 此算法有可能导致的问题是丢失某次通知，导致下次通知匹配失效，待改进
-/*                if(fileList.size() < children.size()){//加watch
-                    for(String fileName : children){
-                        if(!fileList.contains(fileName)){
-                            String path = url + "/" + fileName;
-                            IZkDataListener iZkDataListener = getIZkDataListener();
-                            zkClient.subscribeDataChanges(path,iZkDataListener);
-                            watchMap.put(path, iZkDataListener);
-                            fileList.add(path);
-
-                            System.out.println("添加watch:" + path);
-                            //输出配置
-                            String content = zkClient.readData(path);
-                            System.out.println(url + "     =      "+ content);
-                        }
-                    }
-                } else {//减watch
-                    Iterator<String> it = fileList.iterator();
-                    while(it.hasNext()){
-                        String fileName = it.next();
-                        if(!children.contains(fileName)){
-                            String path = url + "/" + fileName;
-                            zkClient.unsubscribeDataChanges(path,watchMap.get(path));
-                            watchMap.remove(path);
-                            it.remove();
-
-                            System.out.println("去除watch:" + path);
-                        }
-                    }
-                }*/
 
                 //改进后的算法
                 List<String> diffList = getDiffrent(children, fileList);//取出差集
@@ -141,8 +117,7 @@ public class ZKConfClient {
                                 /**
                                  * 可以进行客户端配置删除操作
                                  */
-
-                                System.out.println("去除watch:" + path);
+                                log.info("去除watch:{}", path);
                             }
                         }
                     } else { //加
@@ -154,19 +129,18 @@ public class ZKConfClient {
                          * 可以进行设置黑白名单等操作
                          */
                         if(znodeEvent.addNode(path, zkClient.readData(path))){
-                            System.out.println("开发者创建znode操作调用成功");
+                            log.info("开发者创建znode操作调用成功");
                         } else {
-                            System.out.println("开发者创建znode操作调用失败");
+                            log.info("开发者创建znode操作调用失败");
                         }
-                        System.out.println("添加watch:" + path);
+                        log.info("添加watch:{}", path);
                         //输出配置
                         String content = zkClient.readData(path);
-                        System.out.println(path + "     =      "+ content);
+                        log.info("path={},content={}",path ,content);
                     }
                 }
             }
         });
-
     }
 
     /**
@@ -185,22 +159,22 @@ public class ZKConfClient {
         return new IZkDataListener() {
             @Override
             public void handleDataChange(String s, Object o) throws Exception {
-                System.out.println(s+"改变"+o);
+                log.info("znode:{}发生改变，内容为：{}", s, o);
                 if(znodeEvent.updateNode(s, o)){
-                    System.out.println("开发者修改znode操作调用成功");
+                    log.info("开发者修改znode操作调用成功");
                 } else {
-                    System.out.println("开发者修改znode操作调用失败");
+                    log.info("开发者修改znode操作调用失败");
                 }
             }
 
             @Override
             public void handleDataDeleted(String path) throws Exception {
                 //这里也可以做删除配置的事件
-                System.out.println(path+"删除");
+                log.info("znode:{}已删除", path);
                 if(znodeEvent.delNode(path)){
-                    System.out.println("开发者删除znode操作调用成功");
+                    log.info("开发者删除znode操作调用成功");
                 } else {
-                    System.out.println("开发者删除znode操作调用失败");
+                    log.info("开发者删除znode操作调用失败");
                 }
             }
         };

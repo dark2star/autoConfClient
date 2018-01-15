@@ -1,17 +1,27 @@
 package org.haosapp.autoconf.annotation;
 
-import org.haosapp.autoconf.annotation.AutoConfField;
-
 import java.util.List;
 
 /**
+ * 配置包装类
  * Created by wangwenhao on 2018/1/10.
  */
 public class AutoConfClass {
 
+    /**
+     * 类名
+     */
     private String className;
 
-    List<AutoConfField> confClassList;
+    /**
+     * 类路径
+     */
+    private String classPath;
+
+    /**
+     * 注解属性列表
+     */
+    private List<AutoConfField> confClassList;
 
     public String getClassName() {
         return className;
@@ -19,6 +29,14 @@ public class AutoConfClass {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getClassPath() {
+        return classPath;
+    }
+
+    public void setClassPath(String classPath) {
+        this.classPath = classPath;
     }
 
     public List<AutoConfField> getConfClassList() {

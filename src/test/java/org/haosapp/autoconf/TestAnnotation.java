@@ -23,7 +23,7 @@ public class TestAnnotation {
 				continue;
 			}
 			System.out.println(acf.filename());
-			Parent c = new Parent(cs);
+			AutoConf c = new AutoConf(cs);
 			List<AutoConfField> autoConfFieldList = c.init();//获取泛型中类里面的注解
 			confClassMap.put(acf.filename(), autoConfFieldList);
 			//输出结果

@@ -15,10 +15,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
 /**
- * This scanner is used to find out all classes in a package.
- * Created by whf on 15-2-26.
+ * 包扫描实现类
+ * Created by wangwenhao on 2018/1/9.
  */
-//public class ClasspathPackageScanner implements PackageScanner {
 public class ClasspathPackageScanner {
     private Logger logger = LoggerFactory.getLogger(ClasspathPackageScanner.class);
 

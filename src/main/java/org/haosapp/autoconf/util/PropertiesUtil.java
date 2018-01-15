@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-//关于Properties类常用的操作
+/**
+ * 关于Properties类常用的操作
+ * Created by wangwenhao on 2018/1/9.
+ */
 public class PropertiesUtil {
     //根据Key读取Value
     public static String GetValueByKey(String filePath, String key) {
@@ -17,7 +20,6 @@ public class PropertiesUtil {
             pps.load(in);
             fis.close();
             String value = pps.getProperty(key);
-            System.out.println(key + " = " + value);
             return value;
             
         }catch (IOException e) {
@@ -39,7 +41,6 @@ public class PropertiesUtil {
             String strKey = (String) en.nextElement();
             Object strValue = pps.get(strKey);
             returnMap.put(strKey, strValue);
-            System.out.println("key =" + strKey + ", value =" + strValue);
         }
         return returnMap;
     }
@@ -59,12 +60,5 @@ public class PropertiesUtil {
         //将此 Properties 表中的属性列表（键和元素对）写入输出流  
         pps.store(out, "Update " + pKey + " name");
         in.close();
-    }
-    
-    public static void main(String [] args) throws IOException{
-        //String value = GetValueByKey("Test.properties", "name");
-        //System.out.println(value);
-        //GetAllProperties("Test.properties");
-        WriteProperties("Test.properties","long", "212");
     }
 }

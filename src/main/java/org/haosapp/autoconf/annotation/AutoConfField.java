@@ -2,6 +2,10 @@ package org.haosapp.autoconf.annotation;
 
 import java.lang.reflect.Field;
 
+/**
+ * AutoConf注解
+ * Created by wangwenhao on 2018/1/9.
+ */
 public class AutoConfField {
 
 	public AutoConfField(){}

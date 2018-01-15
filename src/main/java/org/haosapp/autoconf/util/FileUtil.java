@@ -1,16 +1,20 @@
 package org.haosapp.autoconf.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author chenhuan001
- *
+ * 文件操作类
  */
 public class FileUtil {
-String newline = "\r\n";//windows
+
+    protected static final Logger log = LoggerFactory.getLogger(FileUtil.class);
+    String newline = "\r\n";//windows
     
     /**
      * 写入文件,末尾自动添加\r\n
@@ -33,7 +37,7 @@ String newline = "\r\n";//windows
         }
         catch(IOException ex)
         {
-            System.out.println(ex.getStackTrace());
+            log.error("写入文件发生异常", ex);
         }
     }
     
@@ -57,11 +61,11 @@ String newline = "\r\n";//windows
         }
         catch(IOException ex)
         {
-            System.out.println(ex.getStackTrace());
+            log.error("写入文件发生异常", ex);
         }
     }
     /**
-     * 整个文件以string放回，添加\r\n换行
+     * 读取文件，添加\r\n换行
      * @param path
      * @return
      */
@@ -79,7 +83,7 @@ String newline = "\r\n";//windows
                 sb.append(tempstr + "\r\n");
             }
         } catch(IOException ex) {
-            System.out.println(ex.getStackTrace());
+            log.error("读取文件发生异常", ex);
         }
         return sb.toString();
     }
@@ -104,7 +108,7 @@ String newline = "\r\n";//windows
                 sb.append(tempstr + "\r\n");
             }
         } catch(IOException ex) {
-            System.out.println(ex.getStackTrace());
+            log.error("加入编码读取文件发生异常", ex);
         }
         return sb.toString();
     }
@@ -128,7 +132,7 @@ String newline = "\r\n";//windows
                 lines.add(tempstr.toString());
             }
         } catch(IOException ex) {
-            System.out.println(ex.getStackTrace());
+            log.error("按行读取文件发生异常", ex);
         }
         return lines;
     }
@@ -144,8 +148,7 @@ String newline = "\r\n";//windows
                myFolderPath.mkdir();   
             }   
         } catch (Exception e) {
-            System.out.println("新建目录操作出错");
-            e.printStackTrace();   
+            log.error("新建目录发生异常", e);
         }  
     }
     
@@ -161,8 +164,7 @@ String newline = "\r\n";//windows
             } 
         }   
         catch (Exception e) {
-            System.out.println("新建文件操作出错");
-            e.printStackTrace();   
+            log.error("新建目录发生异常", e);
         }  
     }
     
@@ -187,7 +189,7 @@ String newline = "\r\n";//windows
             file.delete();
         }
     } catch(Exception e) {
-        System.out.println("删除文件失败");
+        log.error("删除文件发生异常", e);
     }
     }
     
@@ -216,24 +218,6 @@ String newline = "\r\n";//windows
             }   
         }   
         return file_paths;
-    }
-    
-    public static void main(String[] args) {
-//        String path = "C:\\Users\\chenhuan001\\workspace\\CrawlSinaBySelenium\\src";
-//        List<String> file_paths = getAllFileNameInFold(path);
-//        for(String file_path : file_paths) {
-//            System.out.println(file_path);
-//        }
-        deleteEveryThing("C:\\Users\\chenhuan001\\Desktop\\testDelete.txt");
-        // TODO Auto-generated method stub
-//        List<Document> docs = readDocsFromFile("Data/user_program_data.txt");
-//        System.out.println(docs.size());
-//        for (int i = 0; i < docs.size(); i++) {
-//            System.out.println(docs.toString());
-//        }
-        //mkDir("tmp_dir");
-        //createNewFile("tmp_dir/new_file1.txt");
-        //deleteEveryThing("save.arff");
     }
 
 }

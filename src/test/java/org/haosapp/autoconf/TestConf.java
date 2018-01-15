@@ -1,5 +1,6 @@
 package org.haosapp.autoconf;
 
+import org.I0Itec.zkclient.ZkClient;
 import org.haosapp.autoconf.util.FileUtil;
 import org.haosapp.autoconf.util.PropertiesUtil;
 import org.haosapp.autoconf.zk.*;
@@ -21,9 +22,9 @@ public class TestConf {
         final String localPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         System.out.println("配置文件位置："+localPath);
         //初始化扫描
-        LoadTest.initScanTest(packageName);
+        Load.initScan(packageName);
 
-        ZKConfClient.initZk(zkHostList, watchUrl,new ZnodeEvent(){
+        ZKConfClient.initZk(zkHostList,new ZnodeEvent(){
             /**
              * 当启动连接zk失败时触发
              *
@@ -31,7 +32,7 @@ public class TestConf {
              * @throws Exception
              */
             @Override
-            public boolean zkConnectFail() throws Exception {
+            public boolean zkConnectFail() {
                 System.out.println("============启动连接zk失败=================");
                 return true;
             }
@@ -44,22 +45,26 @@ public class TestConf {
              * @throws Exception
              */
             @Override
-            public boolean init(Map<String, Object> map) throws Exception {
+            public boolean init(Map<String, Object> map) {
                 System.out.println("============初始化操作=================");
-                Iterator<Map.Entry<String, Object>> entries = map.entrySet().iterator();
-                while (entries.hasNext()) {
-                    Map.Entry<String, Object> entry = entries.next();
-                    System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-                    String path = entry.getKey();
-                    Object content = entry.getValue();
-                    String[] pathSplit = path.split("/");
-                    String fileName = pathSplit[pathSplit.length-1];
-                    String localfile = localPath + "/"+ fileName;
-                    FileUtil.write( localfile,trans(String.valueOf(content)));;
-                    Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
-                    LoadTest.setConfTest(fileName, returnMap);
+                try {
+                    Iterator<Map.Entry<String, Object>> entries = map.entrySet().iterator();
+                    while (entries.hasNext()) {
+                        Map.Entry<String, Object> entry = entries.next();
+                        System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                        String path = entry.getKey();
+                        Object content = entry.getValue();
+                        String[] pathSplit = path.split("/");
+                        String fileName = pathSplit[pathSplit.length-1];
+                        String localfile = localPath + "/"+ fileName;
+                        FileUtil.write( localfile,trans(String.valueOf(content)));;
+                        Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
+                        Load.setConf(fileName, returnMap);
+                    }
+                    return true;
+                } catch (Exception e){
+                    return false;
                 }
-                return false;
             }
 
             /**
@@ -70,15 +75,19 @@ public class TestConf {
              * @return 是否操作成功
              */
             @Override
-            public boolean addNode(String path, Object content) throws Exception {
+            public boolean addNode(String path, Object content) {
                 System.out.println("============创建操作=================");
-                String[] pathSplit = path.split("/");
-                String fileName = pathSplit[pathSplit.length-1];
-                String localfile = localPath + "/"+ fileName;
-                FileUtil.write( localfile,trans(String.valueOf(content)));;
-                Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
-                LoadTest.setConfTest(fileName, returnMap);
-                return true;
+                try{
+                    String[] pathSplit = path.split("/");
+                    String fileName = pathSplit[pathSplit.length-1];
+                    String localfile = localPath + "/"+ fileName;
+                    FileUtil.write( localfile,trans(String.valueOf(content)));;
+                    Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
+                    Load.setConf(fileName, returnMap);
+                    return true;
+                } catch (Exception e){
+                    return false;
+                }
             }
 
             /**
@@ -103,24 +112,30 @@ public class TestConf {
              * @return 是否操作成功
              */
             @Override
-            public boolean updateNode(String path, Object content) throws Exception {
-                System.out.println("============修改操作=================");
-                String[] pathSplit = path.split("/");
-                String fileName = pathSplit[pathSplit.length-1];
-                String localfile = localPath + "/"+ fileName;
-                FileUtil.write( localfile,trans(String.valueOf(content)));;
-                Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
-                LoadTest.setConfTest(fileName, returnMap);//此处需解决从spring中获取对象
-                return true;
+            public boolean updateNode(String path, Object content) {
+                try {
+                    System.out.println("============修改操作=================");
+                    String[] pathSplit = path.split("/");
+                    String fileName = pathSplit[pathSplit.length-1];
+                    String localfile = localPath + "/"+ fileName;
+                    FileUtil.write( localfile,trans(String.valueOf(content)));
+                    Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
+                    Load.setConf(fileName, returnMap);//此处需解决从spring中获取对象
+                    return true;
+                } catch (Exception e){
+                    return false;
+                }
             }
         });
+
+        ZKConfClient.startWatch(watchUrl);
 
         /**
          * 模拟其他的线程调用
          */
         new Thread(){
             @Override
-            public void start(){
+            public void run(){
                 while (true){
                     System.out.println("用户使用redis配置 Host = " + RedisConf.getInstance().getHost()
                             + ", Port = " + RedisConf.getInstance().getPort()

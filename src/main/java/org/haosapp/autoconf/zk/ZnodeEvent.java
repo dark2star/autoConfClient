@@ -13,7 +13,7 @@ public interface ZnodeEvent {
      * @return
      * @throws Exception
      */
-    boolean zkConnectFail() throws Exception;
+    boolean zkConnectFail();
 
     /**
      * 初始化znode事件
@@ -21,7 +21,7 @@ public interface ZnodeEvent {
      * @return 是否操作成功
      * @throws Exception
      */
-    boolean init(Map<String, Object> map) throws Exception;
+    boolean init(Map<String, Object> map);
 
     /**
      * 添加znode事件
@@ -29,14 +29,14 @@ public interface ZnodeEvent {
      * @param content znode的内容
      * @return 是否操作成功
      */
-    boolean addNode(String path, Object content) throws Exception;
+    boolean addNode(String path, Object content);
 
     /**
      * 删除znode事件
      * @param path znode的url
      * @return 是否操作成功
      */
-    boolean delNode(String path) throws Exception;
+    boolean delNode(String path);
 
     /**
      * 修改znode事件
@@ -44,5 +44,5 @@ public interface ZnodeEvent {
      * @param content znode的内容
      * @return 是否操作成功
      */
-    boolean updateNode(String path, Object content) throws Exception;
+    boolean updateNode(String path, Object content);
 }

@@ -5,12 +5,16 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Parent {
+/**
+ * 注解解析类
+ * Created by wangwenhao on 2018/1/9.
+ */
+public class AutoConf {
 
 	private Class entity;
 
 
-	public Parent(Class entity) {
+	public AutoConf(Class entity) {
 		this.entity = entity;
         //init();
 	}

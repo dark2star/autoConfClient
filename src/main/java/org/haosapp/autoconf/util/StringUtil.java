@@ -2,6 +2,10 @@ package org.haosapp.autoconf.util;
 
 import java.net.URL;
 
+/**
+ * 字符串工具类
+ * Created by wangwenhao on 2018/1/9.
+ */
 public class StringUtil {
     private StringUtil() {
 
@@ -53,5 +57,20 @@ public class StringUtil {
         int splashIndex = trimmed.indexOf('/');
 
         return trimmed.substring(splashIndex);
+    }
+
+    /**
+     * 兼容disconf服务端做的字符转换
+     * @param text
+     * @return
+     */
+    public static String trans(String text){
+        if(text.startsWith("\"")){
+            text = text.substring(1);
+        }
+        if(text.endsWith("\"")){
+            text = text.substring(0,text.length() - 1);
+        }
+        return text;
     }
 }
