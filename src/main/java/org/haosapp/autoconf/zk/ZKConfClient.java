@@ -79,10 +79,10 @@ public class ZKConfClient {
          * 初始化
          */
         List<String> initFileList = zkClient.getChildren(url);
-        fileList.addAll(initFileList);
         Map<String, Object> initMap = new HashMap<String, Object>();
         for(String fileName : initFileList){
             String path = url + "/" + fileName;
+            fileList.add(path);
             IZkDataListener iZkDataListener = getIZkDataListener(znodeEvent);
             zkClient.subscribeDataChanges(path,iZkDataListener);
             watchMap.put(path, iZkDataListener);
@@ -103,16 +103,16 @@ public class ZKConfClient {
                 }
 
                 //改进后的算法
+                children = apendPath(parentPath, children);
                 List<String> diffList = getDiffrent(children, fileList);//取出差集
-                for(String diff : diffList){
-                    String path = parentPath + "/" + diff;
-                    if(fileList.contains(diff)){ //减
+                for(String path : diffList){
+                    if(fileList.contains(path)){ //减
                         zkClient.unsubscribeDataChanges(path,watchMap.get(path));
                         watchMap.remove(path);
                         Iterator<String> it = fileList.iterator();
                         while(it.hasNext()) {
                             String fileName = it.next();
-                            if(diff.equals(fileName)){
+                            if(path.equals(fileName)){
                                 it.remove();
                                 /**
                                  * 可以进行客户端配置删除操作
@@ -178,6 +178,14 @@ public class ZKConfClient {
                 }
             }
         };
+    }
+
+    private static List<String> apendPath(String path, List<String> znodeList) {
+        List<String> returnList = new ArrayList<String>();
+        for(String znode : znodeList){
+            returnList.add(path + "/" + znode);
+        }
+        return returnList;
     }
 
     /**
