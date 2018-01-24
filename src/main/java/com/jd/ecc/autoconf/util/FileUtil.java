@@ -15,7 +15,7 @@ public class FileUtil {
 
     protected static final Logger log = LoggerFactory.getLogger(FileUtil.class);
     String newline = "\r\n";//windows
-    
+
     /**
      * 写入文件,末尾自动添加\r\n
      * utf-8  追加
@@ -26,6 +26,7 @@ public class FileUtil {
     {
         try
         {
+            str = str.replace("\\n", System.getProperty("line.separator"));
             File file = new File(path);
             if(!file.exists())
                 file.createNewFile();

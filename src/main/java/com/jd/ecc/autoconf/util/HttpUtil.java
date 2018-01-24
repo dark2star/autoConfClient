@@ -29,6 +29,7 @@ public class HttpUtil {
         okHttpClient=new OkHttpClient.Builder()
                 .connectTimeout(connectTimeout, TimeUnit.SECONDS)
                 .readTimeout(readTimeout, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)//定义了重试
                 .build();
     }
 

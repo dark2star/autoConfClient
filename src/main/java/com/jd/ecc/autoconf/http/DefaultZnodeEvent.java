@@ -2,6 +2,7 @@ package com.jd.ecc.autoconf.http;
 
 import com.jd.ecc.autoconf.util.FileUtil;
 import com.jd.ecc.autoconf.util.PropertiesUtil;
+import com.jd.ecc.autoconf.util.StringUtil;
 import com.jd.ecc.autoconf.zk.ZnodeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,13 @@ public class DefaultZnodeEvent implements ZnodeEvent {
         for(String resourcePath : resourcePathList){
             try {
                 if(resourcePath.contains(subProperties)){
-                    String resourceName = new File(resourcePath).getName();
+                    String resourceName = new File(resourcePath).getName();//获取资源名称
                     Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(resourcePath);
                     Load.setConf(resourceName, returnMap);
                 }
             } catch (Exception e) {
                 log.error("加载本地配置" + resourcePath + "失败",e);
+                return false;
             }
         }
         return true;
@@ -50,7 +52,7 @@ public class DefaultZnodeEvent implements ZnodeEvent {
      */
     @Override
     public boolean init(Map<String, Object> map) {
-        return false;
+        return true;
     }
 
     /**
@@ -62,7 +64,18 @@ public class DefaultZnodeEvent implements ZnodeEvent {
      */
     @Override
     public boolean addNode(String path, Object content) {
-        return false;
+        try{
+            String[] pathSplit = path.split("/");
+            String fileName = pathSplit[pathSplit.length-1];
+            String localfile = resourcePath + "/"+ fileName;
+            FileUtil.write( localfile,StringUtil.trans(String.valueOf(content)));;
+            Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
+            Load.setConf(fileName, returnMap);
+        } catch (Exception e){
+            log.error("添加配置失败，path={},content={}", path, content);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -73,7 +86,9 @@ public class DefaultZnodeEvent implements ZnodeEvent {
      */
     @Override
     public boolean delNode(String path) {
-        return false;
+        String[] pathSplit = path.split("/");
+        FileUtil.deleteEveryThing(resourcePath + "/"+ pathSplit[pathSplit.length-1]);
+        return true;
     }
 
     /**
@@ -85,6 +100,17 @@ public class DefaultZnodeEvent implements ZnodeEvent {
      */
     @Override
     public boolean updateNode(String path, Object content) {
-        return false;
+        try {
+            String[] pathSplit = path.split("/");
+            String fileName = pathSplit[pathSplit.length-1];
+            String localfile = resourcePath + "/"+ fileName;
+            FileUtil.write( localfile, StringUtil.trans(String.valueOf(content)));
+            Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
+            Load.setConf(fileName, returnMap);//此处需解决从spring中获取对象
+        } catch (Exception e){
+            log.error("更新配置失败，path={},content={}", path, content);
+            return false;
+        }
+        return true;
     }
 }

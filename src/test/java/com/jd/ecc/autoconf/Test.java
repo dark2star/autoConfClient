@@ -2,6 +2,7 @@ package com.jd.ecc.autoconf;
 
 import com.jd.ecc.autoconf.http.AutoConfClient;
 import com.jd.ecc.autoconf.http.DefaultZnodeEvent;
+import com.jd.ecc.autoconf.util.Common;
 
 /**
  * Created by wangwenhao on 2018/1/10.
@@ -32,8 +33,12 @@ public class Test {
             System.out.println(str);
         }*/
 
-        AutoConfClient autoConfClient = AutoConfClient.buildAutoConfClient("127.0.0.1:2181", new DefaultZnodeEvent(), "com.jd.ecc.autoconf");
-        autoConfClient.setWatch(null);
+        String host = "http://192.168.171.124:18902";
+        //String host = "http://192.168.171.125:18902";
+        String path = "/";
+        String key = "test";
+        AutoConfClient autoConfClient = AutoConfClient.buildAutoConfClient(new DefaultZnodeEvent(), "com.jd.ecc.autoconf");
+        autoConfClient.setWatch(host, path, key, Common.getConfTime);
 
         /**
          * 模拟其他的线程调用
