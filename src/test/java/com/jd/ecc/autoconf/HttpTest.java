@@ -3,6 +3,7 @@ package com.jd.ecc.autoconf;
 import com.jd.ecc.autoconf.http.AutoConfClient;
 import com.jd.ecc.autoconf.util.Common;
 import com.jd.ecc.autoconf.util.ZKProxyUtil;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,7 +16,8 @@ public class HttpTest {
 
     private static String url = "http://192.168.171.124:18902/client/zk/data/test?path=temptest";
 
-    public static void main(String[] args) throws IOException {
+    @Test
+    public void run() {
 
 /*        OkHttpClient client = new OkHttpClient();
 
@@ -33,9 +35,9 @@ public class HttpTest {
         String str = new String(zkProxyResult.getData());
         System.out.println("解码后=  " + str);*/
 
-        ZKProxyUtil zkProxyUtil = new ZKProxyUtil("http://192.168.171.124:18902", Common.connectTimeout, Common.readTimeout);
+        //ZKProxyUtil zkProxyUtil = new ZKProxyUtil("http://192.168.171.124:18902", Common.CONNECTTIMEOUT, Common.READTIMEOUT);
         //System.out.println(zkProxyUtil.getData("test","temptest"));
-        System.out.println(zkProxyUtil.getChild("test","/"));
+        //System.out.println(zkProxyUtil.getChild("test","/"));
 
         Map<String, Integer> m1 = new HashMap<String, Integer>();
         m1.put("qq",1);
@@ -47,6 +49,10 @@ public class HttpTest {
         m2.put("ww",1);
         m2.put("qq1",2);
         m2.put("ss",2);
+
+/*        for(String name : m1.keySet()){
+            System.out.println(name + "  " + m1.get(name));
+        }*/
 /*        Map<String,Integer> diffOnRight=  getDifferenceSetByGuava(m2, m1);
         for(Map.Entry<String, Integer> entry:diffOnRight.entrySet()){
             System.out.println("共同Map中key:"+entry.getKey()+"  value:"+entry.getValue());
@@ -82,6 +88,18 @@ public class HttpTest {
         }*/
 
         //AutoConfClient.getDiffrent(m1,m2);
+/*        String path = "/test/dis/pid_3";
+        String name = "/redis.properties";
+        if(path.contains(Common.PLATFORMFLOWERFLAG)) {//表示有租户文件
+            String platformFlowerName = path.substring(path.indexOf(Common.PLATFORMFLOWERFLAG));
+            String pid = platformFlowerName.replace(Common.PLATFORMFLOWERFLAG, "");
+            System.out.println(pid);
+            String lastName = name.substring(name.lastIndexOf("."));
+            String fastName = name.replace(lastName, "");
+            lastName = Common.PLATFORMFLAG + pid + lastName;
+            System.out.println(fastName);
+            System.out.println(lastName);
+        }*/
     }
 
     /**

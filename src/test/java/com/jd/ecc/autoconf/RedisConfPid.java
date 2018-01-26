@@ -7,18 +7,18 @@ import com.jd.ecc.autoconf.annotation.AutoConfItem;
  * Redis配置类，模拟spring单例
  * Created by wangwenhao on 2018/1/10.
  */
-@AutoConfFile(filename = "redis.properties")
-public class RedisConf {
+@AutoConfFile(filename = "redis-pid-*.properties")
+public class RedisConfPid {
 
-    private RedisConf(){}
+    private RedisConfPid(){}
 
-    private static RedisConf redisConf = new RedisConf();
+    private static RedisConfPid redisConf = new RedisConfPid();
 
     /**
      * 测试中约定必须有次方法
      * @return
      */
-    public static RedisConf getInstance(){
+    public static RedisConfPid getInstance(){
         return redisConf;
     }
 

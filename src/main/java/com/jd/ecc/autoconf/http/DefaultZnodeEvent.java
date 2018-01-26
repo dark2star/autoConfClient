@@ -1,5 +1,6 @@
 package com.jd.ecc.autoconf.http;
 
+import com.jd.ecc.autoconf.util.Common;
 import com.jd.ecc.autoconf.util.FileUtil;
 import com.jd.ecc.autoconf.util.PropertiesUtil;
 import com.jd.ecc.autoconf.util.StringUtil;

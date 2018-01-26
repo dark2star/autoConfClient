@@ -1,6 +1,7 @@
 package com.jd.ecc.autoconf.http;
 
 import com.jd.ecc.autoconf.annotation.*;
+import com.jd.ecc.autoconf.util.Common;
 import com.jd.ecc.autoconf.zk.ConfInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,6 @@ public class Load {
     }*/
 
     private static final Map<String, AutoConfClass> confClazzMap = new HashMap<String, AutoConfClass>();
-    private static final String platformFlag = "-pid-";
-    private static final String platformStr = "*";
 
     /**
      * 初始化方法
@@ -161,13 +160,13 @@ public class Load {
     public static void setConf(String fileName, Map<String, Object> confMap, ConfInstance ci, boolean isDelete) throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
         AutoConfClass acc = null;
         String tagName = null;
-        if(fileName.contains(platformFlag)){//租户文件变动
-            String prefix = fileName.substring(0, fileName.indexOf(platformFlag) + platformFlag.length());
+        if(fileName.contains(Common.PLATFORMFLAG)){//租户文件变动
+            String prefix = fileName.substring(0, fileName.indexOf(Common.PLATFORMFLAG) + Common.PLATFORMFLAG.length());
             String lastfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-            tagName = prefix + platformStr +lastfix;
+            tagName = prefix + Common.PLATFORMSTR +lastfix;
             acc = confClazzMap.get(tagName);
         } else {
-            acc = confClazzMap.get(tagName);
+            acc = confClazzMap.get(fileName);
         }
         if(acc == null){
             return;
@@ -228,7 +227,16 @@ public class Load {
      * @throws InvocationTargetException
      */
     public static void setConf(String fileName, Map<String, Object> confMap) throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
-        AutoConfClass acc = confClazzMap.get(fileName);
+        AutoConfClass acc = null;
+        String tagName = null;
+        if(fileName.contains(Common.PLATFORMFLAG)){//租户文件变动
+            String prefix = fileName.substring(0, fileName.indexOf(Common.PLATFORMFLAG) + Common.PLATFORMFLAG.length());
+            String lastfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+            tagName = prefix + Common.PLATFORMSTR +lastfix;
+            acc = confClazzMap.get(tagName);
+        } else {
+            acc = confClazzMap.get(fileName);
+        }
         if(acc == null){
             return;
         }

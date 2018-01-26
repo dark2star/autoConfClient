@@ -3,13 +3,16 @@ package com.jd.ecc.autoconf;
 import com.jd.ecc.autoconf.http.AutoConfClient;
 import com.jd.ecc.autoconf.http.DefaultZnodeEvent;
 import com.jd.ecc.autoconf.util.Common;
+import org.junit.Test;
 
 /**
  * Created by wangwenhao on 2018/1/10.
  */
-public class Test {
+public class AutoConfClientTest {
     private static final String platformFlag = "-pid-";
-    public static void main(String[] a) throws Exception {
+
+    @Test
+    public void run() throws Exception {
         /*Class<?> threadClazz = Class.forName("org.haosapp.autoconf.RedisConf");
         Method method1 = threadClazz.getMethod("getInstance");
         Object o = method1.invoke(null);
@@ -35,10 +38,10 @@ public class Test {
 
         String host = "http://192.168.171.124:18902";
         //String host = "http://192.168.171.125:18902";
-        String path = "/";
+        String path = "/demo_1_dev/";
         String key = "test";
         AutoConfClient autoConfClient = AutoConfClient.buildAutoConfClient(new DefaultZnodeEvent(), "com.jd.ecc.autoconf");
-        autoConfClient.setWatch(host, path, key, Common.getConfTime);
+        autoConfClient.setWatch(host, path, key, Common.GETCONFTIME);
 
         /**
          * 模拟其他的线程调用
@@ -50,6 +53,10 @@ public class Test {
                     System.out.println("用户使用redis配置 Host = " + RedisConf.getInstance().getHost()
                             + ", Port = " + RedisConf.getInstance().getPort()
                             + ", Password = " + RedisConf.getInstance().getPassword());
+
+                    System.out.println("===租户使用redis配置 Host = " + RedisConfPid.getInstance().getHost()
+                            + ", Port = " + RedisConfPid.getInstance().getPort()
+                            + ", Password = " + RedisConfPid.getInstance().getPassword());
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {

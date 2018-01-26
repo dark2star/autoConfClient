@@ -5,7 +5,10 @@ package com.jd.ecc.autoconf.util;
  */
 public class Common {
 
-    public static final int connectTimeout = 30;
-    public static final int readTimeout = 30;
-    public static final int getConfTime = 20000;
+    public static final int CONNECTTIMEOUT = 30;
+    public static final int READTIMEOUT = 30;
+    public static final int GETCONFTIME = 14000;
+    public static final String PLATFORMFLOWERFLAG = "pid_";
+    public static final String PLATFORMFLAG = "-pid-";
+    public static final String PLATFORMSTR = "*";
 }
