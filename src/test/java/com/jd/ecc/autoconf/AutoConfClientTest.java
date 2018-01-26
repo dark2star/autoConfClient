@@ -11,7 +11,7 @@ import org.junit.Test;
 public class AutoConfClientTest {
     private static final String platformFlag = "-pid-";
 
-    @Test
+    //@Test
     public void run() throws Exception {
         /*Class<?> threadClazz = Class.forName("org.haosapp.autoconf.RedisConf");
         Method method1 = threadClazz.getMethod("getInstance");

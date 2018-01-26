@@ -32,7 +32,7 @@ public class ZKProxyUtil {
     public ConfData getData(String secretKey, String pathValue){
         ConfData confData = null;
         String url = host + "/client/zk/data/" + secretKey + "?path=" + pathValue;
-        log.info("请求url={}",url);
+        log.info("获取内容url={}",url);
         try {
             String res = HttpUtil.getInstance(this.connectTimeout,this.readTimeout).get(url);
             log.debug("zkproxy返回的内容:{}",res);
@@ -57,7 +57,7 @@ public class ZKProxyUtil {
     public Map<String, Integer> getChild(String secretKey, String pathValue){
         Map<String, Integer> confDataMap = new HashMap<String, Integer>();
         String url = host + "/client/zk/children/" + secretKey + "?path=" + pathValue;
-        log.info("请求url={}",url);
+        log.info("获取子节点url={}",url);
         try {
             String res = HttpUtil.getInstance(this.connectTimeout,this.readTimeout).get(url);
             log.debug("zkproxy返回的内容:{}",res);

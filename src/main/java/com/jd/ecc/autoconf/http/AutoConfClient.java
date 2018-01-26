@@ -71,7 +71,7 @@ public class AutoConfClient {
                     try {
                         Thread.sleep(getConfTime);
                         if(!startJob(host, path, key)){
-                            log.error("更新配置失败， host={},path={},key={}", host, path, key);
+                            log.error("应用配置时错误， host=" + host + ",path=" + path + ",key=" + key);
                         }
                     } catch (Exception e) {
                         log.error("获取最新配置时异常", e);
@@ -107,18 +107,23 @@ public class AutoConfClient {
          * 但租户目录则存在配置文件被删除而没有删除租户目录的情况
          */
         if(newConfDataMap.size() < 1 && lastName == null){
-            log.error("获取子节点失败，host={},path={}",host,path);
+            log.error("获取子节点失败，host=" + host + ",path=" + path);
             return false;
         }
         //判断当前path下是否有租户目录，在具有租户目录的情况下应该使用递归进行租户目录的扫描
-        for(String name : newConfDataMap.keySet()){
+        Iterator<Map.Entry<String, Integer>> allentries = newConfDataMap.entrySet().iterator();
+        while (allentries.hasNext()) {
+            Map.Entry<String, Integer> entry = allentries.next();
+            String name = entry.getKey();
             if(name.startsWith(Common.PLATFORMFLOWERFLAG)){//继续跟踪租户目录
                 String newPath = path + name + "/";
-                if(startJob(host, newPath, key)){
-                    log.error("更新配置失败， host={},path={},key={}", host, newPath, key);
+                allentries.remove();//去除租户目录
+                if(!startJob(host, newPath, key)){
+                    log.error("应用租户配置时错误， host=" + host + ",path=" + path + ",key=" + key);
                 }
             }
         }
+
 
         /**
          * 判断是否是第一次加载，如果是第一次则执行全量下载，如果不是则需判断每个znode的版本是否发生了变动
