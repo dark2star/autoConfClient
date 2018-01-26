@@ -119,7 +119,7 @@ public class AutoConfClient {
                 String newPath = path + name + "/";
                 allentries.remove();//去除租户目录
                 if(!startJob(host, newPath, key)){
-                    log.error("应用租户配置时错误， host=" + host + ",path=" + path + ",key=" + key);
+                    log.error("应用租户配置时错误， host=" + host + ",path=" + newPath + ",key=" + key);
                 }
             }
         }
