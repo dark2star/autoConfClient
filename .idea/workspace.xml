@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8bad3263-af0d-472b-8514-7d95be24d644" name="Default" comment="">
+    <list default="true" id="8bad3263-af0d-472b-8514-7d95be24d644" name="Default" comment="完善http版基础功能，修改部分bug">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/AutoConfClient.java" afterPath="$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/AutoConfClient.java" />
     </list>
@@ -17,20 +18,30 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AutoConfClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AutoConfClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/AutoConfClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="93" column="51" lean-forward="true" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
+            <state relative-caret-position="-55">
+              <caret line="173" column="63" lean-forward="false" selection-start-line="173" selection-start-column="63" selection-end-line="173" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#733#763#0" expanded="true" />
                 <element signature="e#2102#2614#0" expanded="true" />
                 <element signature="e#2613#2614#0" expanded="true" />
-                <element signature="e#9579#9596#0" expanded="true" />
-                <element signature="e#9653#9670#0" expanded="true" />
-                <element signature="e#9727#9744#0" expanded="true" />
+                <element signature="e#9578#9595#0" expanded="true" />
+                <element signature="e#9652#9669#0" expanded="true" />
+                <element signature="e#9726#9743#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="703">
+              <caret line="33" column="11" lean-forward="false" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -74,8 +85,8 @@
       <file leaf-file-name="SpringZnodeEvent.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/SpringZnodeEvent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="45" column="29" lean-forward="true" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+            <state relative-caret-position="51">
+              <caret line="101" column="25" lean-forward="false" selection-start-line="101" selection-start-column="25" selection-end-line="101" selection-end-column="25" />
               <folding>
                 <element signature="e#849#850#0" expanded="true" />
                 <element signature="e#897#898#0" expanded="true" />
@@ -123,8 +134,8 @@
       <find>更新配置失败</find>
       <find>更新配置失败， host=</find>
       <find>log.error</find>
-      <find>应用租户配置时错误</find>
       <find>获取最新配置时异常</find>
+      <find>应用租户配置时错误</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -143,7 +154,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/test/java/org/haosapp/autoconf/LoadTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/haosapp/autoconf/zk/LoadTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/org/haosapp/autoconf/RedisConf1.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/haosapp/autoconf/util/FileUtil.java" />
@@ -194,6 +204,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/util/ZKProxyUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/SpringZnodeEvent.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/AutoConfClient.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -317,6 +328,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autoConfClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autoConfClient" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="autoconf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zk" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1294,7 +1335,7 @@
       <workItem from="1515567840471" duration="13150000" />
       <workItem from="1515638485077" duration="41217000" />
       <workItem from="1516077335340" duration="1200000" />
-      <workItem from="1516083326121" duration="131477000" />
+      <workItem from="1516083326121" duration="133431000" />
     </task>
     <task id="LOCAL-00001" summary="1.实现与spring框架结合，但方式不太优雅，待改进&#10;2.实现多租户，采用区分配置文件的方式">
       <created>1515983493150</created>
@@ -1338,7 +1379,14 @@
       <option name="project" value="LOCAL" />
       <updated>1516959808436</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="完善http版基础功能，修改部分bug">
+      <created>1516962938966</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1516962938966</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1362,7 +1410,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="187044000" />
+    <option name="totallyTimeSpent" value="188998000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1386,7 +1434,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32839838" sideWeight="0.4974293" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32839838" sideWeight="0.4974293" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1484,7 +1532,8 @@
     <MESSAGE value="http版基础功能" />
     <MESSAGE value="完善http版基础功能，实现基本可用状态" />
     <MESSAGE value="完善http版基础功能，实现spring适配器，修改部分bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="完善http版基础功能，实现spring适配器，修改部分bug" />
+    <MESSAGE value="完善http版基础功能，修改部分bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善http版基础功能，修改部分bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1713,14 +1762,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/zk/ZnodeEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="15" column="12" lean-forward="false" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/jd/ecc/autoconf/TestConf.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-171">
@@ -1802,14 +1843,6 @@
             <element signature="e#1483#1500#0" expanded="true" />
             <element signature="e#1622#1639#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1908,10 +1941,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/zk/ZnodeEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="46" column="12" lean-forward="false" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/SpringZnodeEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="45" column="29" lean-forward="true" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+        <state relative-caret-position="51">
+          <caret line="101" column="25" lean-forward="false" selection-start-line="101" selection-start-column="25" selection-end-line="101" selection-end-column="25" />
           <folding>
             <element signature="e#849#850#0" expanded="true" />
             <element signature="e#897#898#0" expanded="true" />
@@ -1921,17 +1962,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/jd/ecc/autoconf/http/AutoConfClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="93" column="51" lean-forward="true" selection-start-line="93" selection-start-column="51" selection-end-line="93" selection-end-column="51" />
+        <state relative-caret-position="-55">
+          <caret line="173" column="63" lean-forward="false" selection-start-line="173" selection-start-column="63" selection-end-line="173" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#733#763#0" expanded="true" />
             <element signature="e#2102#2614#0" expanded="true" />
             <element signature="e#2613#2614#0" expanded="true" />
-            <element signature="e#9579#9596#0" expanded="true" />
-            <element signature="e#9653#9670#0" expanded="true" />
-            <element signature="e#9727#9744#0" expanded="true" />
+            <element signature="e#9578#9595#0" expanded="true" />
+            <element signature="e#9652#9669#0" expanded="true" />
+            <element signature="e#9726#9743#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="33" column="11" lean-forward="false" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
+          <folding />
         </state>
       </provider>
     </entry>

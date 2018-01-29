@@ -168,7 +168,7 @@ public class AutoConfClient {
                         ConfData confData = zkProxyUtil.getData(key, path + name);
                         localFileName = getPlatformFileName(lastName, name);
                         if(znodeEvent.updateNode(localFileName, confData.getContent())){
-                            oldConfDataMap.put(name, newDiffConfDataMap.get(name));//只有应用成功应用配置后才替换旧的账本
+                            oldConfDataMap.put(name, changeConfDataMap.get(name));//只有应用成功应用配置后才替换旧的账本
                             log.info("执行更新配置成功name={}", name);
                         } else {
                             log.error("执行更新配置失败name={}", name);
