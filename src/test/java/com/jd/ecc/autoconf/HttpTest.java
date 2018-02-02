@@ -1,11 +1,9 @@
 package com.jd.ecc.autoconf;
 
-import com.jd.ecc.autoconf.http.AutoConfClient;
+import com.jd.ecc.autoconf.core.Manager;
 import com.jd.ecc.autoconf.util.Common;
-import com.jd.ecc.autoconf.util.ZKProxyUtil;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +47,44 @@ public class HttpTest {
         m2.put("ww",1);
         m2.put("qq1",2);
         m2.put("ss",2);
+
+        //String path ="/qw/dlv/pid_1/redis_11.pf";
+        //String path ="demo_1_dev/pid_4/redis.properties";
+        //String path ="/qw/dlv/pid/redis.pf";
+        //String path ="r.pf";
+        Manager manager = new Manager(null);
+        //System.out.println(path.substring(0, path.lastIndexOf("/")+1));
+        //System.out.println(new Manager(null).getNameByFullName(path));
+        //System.out.println(manager.getPlatformFileNameByPath(manager.getPathByFullName(path), manager.getNameByFullName(path)));
+
+/*        String fileName = "redis-pid-3-ins-2.properties";
+
+        String tagName = null;
+        if(fileName.contains(Common.PLATFORMFLAG)) {//租户文件变动
+            String prefix = fileName.substring(0, fileName.indexOf(Common.PLATFORMFLAG) + Common.PLATFORMFLAG.length());
+            String lastfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+            tagName = prefix + Common.PLATFORMSTR + lastfix;
+        }
+
+        System.out.println(tagName);*/
+
+        System.out.println("--------------------------------------------");
+        String[] testStr = new String[]{"redis.properties",
+                "redis-pid-3-ins-2.properties", "redis-pid-3.properties", "redis-ins-2.properties"," redis-dev.properties"};
+        for(String str : testStr){
+            Map<String, String> map = manager.analyzeFileName(str);
+            System.out.println("fileName =" + str);
+            for(String key : map.keySet()){
+                System.out.println(key + " = " + map.get(key));
+            }
+            System.out.println("tagName = " + Manager.getTagName(str));
+            System.out.println("++++++++++++++++++++++++++++++++++++");
+        }
+
+        System.out.println("00  " + manager.getPlatformFileNameByPath("demo_1_dev/redis_ins_test.properties"));
+        System.out.println("11  " + manager.getPlatformFileNameByPath("demo_1_dev/pid_2/redis_ins_test.properties"));
+        System.out.println("22  " + manager.getPlatformFileNameByPath("demo_1_dev/pid_2/redis.properties"));
+        System.out.println("33  " + manager.getPlatformFileNameByPath("demo_1_dev/redis.properties"));
 
 /*        for(String name : m1.keySet()){
             System.out.println(name + "  " + m1.get(name));

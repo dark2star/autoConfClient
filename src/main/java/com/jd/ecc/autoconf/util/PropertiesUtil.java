@@ -11,6 +11,8 @@ import java.util.Properties;
  * Created by wangwenhao on 2018/1/9.
  */
 public class PropertiesUtil {
+
+    private final static String subProperties = ".properties";
     //根据Key读取Value
     public static String GetValueByKey(String filePath, String key) {
         Properties pps = new Properties();
@@ -31,6 +33,9 @@ public class PropertiesUtil {
     //读取Properties的全部信息
     public static Map<String, Object> GetAllProperties(String filePath) throws IOException {
         Map<String, Object> returnMap = new HashMap<String, Object>();
+        if(!filePath.contains(subProperties)){
+            return returnMap;
+        }
         Properties pps = new Properties();
         FileInputStream fis = new FileInputStream(filePath);
         InputStream in = new BufferedInputStream(fis);

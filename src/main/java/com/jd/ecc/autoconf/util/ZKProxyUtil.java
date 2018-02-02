@@ -5,6 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jd.ecc.autoconf.entity.ConfData;
 import com.jd.ecc.autoconf.entity.ZKProxyResult;
+import com.jd.ecc.middleware.zk.client.ZkWebSocketClient;
+import com.jd.ecc.middleware.zk.common.module.vo.common.MessageTypeEnum;
+import com.jd.ecc.middleware.zk.common.module.vo.req.*;
+import com.jd.ecc.middleware.zk.common.tool.JsonTool;
+import org.java_websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * zk代理通信方法的封装工具类
  * Created by wangwenhao on 2018/1/22.
  */
 public class ZKProxyUtil {
@@ -77,6 +83,68 @@ public class ZKProxyUtil {
             log.error("获取zkproxy pathValue={}时异常",pathValue,e);
         }
         return confDataMap;
+    }
+
+    public static void get(String path, ZkWebSocketClient client) {
+        try{
+            GetDataCommand command = new GetDataCommand();
+            command.setPath(path);
+
+            CommandReq req = new CommandReq();
+            req.setMessageType(MessageTypeEnum.GET_DATA);
+            req.setPayload(JsonTool.toJsonAsBytes(command));
+
+            client.send(JsonTool.toJsonAsBytes(req));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void children(String path, ZkWebSocketClient client) {
+        log.info("发送获取子节点请求path={}", path);
+        try{
+            GetChildrenCommand command = new GetChildrenCommand();
+            command.setPath(path);
+
+            CommandReq req = new CommandReq();
+            req.setMessageType(MessageTypeEnum.GET_CHILDREN);
+            req.setPayload(JsonTool.toJsonAsBytes(command));
+
+            client.send(JsonTool.toJsonAsBytes(req));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void save(String path, String data, ZkWebSocketClient client) {
+        try{
+            SaveDataCommand command = new SaveDataCommand();
+            command.setPath(path);
+            command.setData(data.getBytes());
+
+            CommandReq req = new CommandReq();
+            req.setMessageType(MessageTypeEnum.SAVE);
+            req.setPayload(JsonTool.toJsonAsBytes(command));
+
+            client.send(JsonTool.toJsonAsBytes(req));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void delete(String path, ZkWebSocketClient client) {
+        try{
+            DeleteCommand command = new DeleteCommand();
+            command.setPath(path);
+
+            CommandReq req = new CommandReq();
+            req.setMessageType(MessageTypeEnum.DELETE);
+            req.setPayload(JsonTool.toJsonAsBytes(command));
+
+            client.send(JsonTool.toJsonAsBytes(req));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

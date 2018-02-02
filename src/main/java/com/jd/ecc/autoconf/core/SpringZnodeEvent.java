@@ -1,9 +1,9 @@
-package com.jd.ecc.autoconf.http;
+package com.jd.ecc.autoconf.core;
 
-import com.jd.ecc.autoconf.util.Common;
 import com.jd.ecc.autoconf.util.FileUtil;
 import com.jd.ecc.autoconf.util.PropertiesUtil;
 import com.jd.ecc.autoconf.util.StringUtil;
+import com.jd.ecc.autoconf.zk.ConfInstance;
 import com.jd.ecc.autoconf.zk.ZnodeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +13,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 适配spring的配置中心事件处理类
  * Created by wangwenhao on 2018/1/16.
  */
-public class DefaultZnodeEvent implements ZnodeEvent {
+public class SpringZnodeEvent implements ZnodeEvent {
 
     private final static String subProperties = ".properties";
-    protected static final Logger log = LoggerFactory.getLogger(DefaultZnodeEvent.class);
+    protected static final Logger log = LoggerFactory.getLogger(SpringZnodeEvent.class);
     private final static String resourcePath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+    private ConfInstance confInstance;
+
+    public SpringZnodeEvent(ConfInstance confInstance){
+        this.confInstance = confInstance;
+    }
     /**
      * 当启动连接zk失败时触发
      *
@@ -34,7 +40,7 @@ public class DefaultZnodeEvent implements ZnodeEvent {
                 if(resourcePath.contains(subProperties)){
                     String resourceName = new File(resourcePath).getName();//获取资源名称
                     Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(resourcePath);
-                    Load.setConf(resourceName, returnMap);
+                    Load.setConf(resourceName, returnMap, confInstance, false);
                 }
             } catch (Exception e) {
                 log.error("加载本地配置" + resourcePath + "失败",e);
@@ -71,7 +77,7 @@ public class DefaultZnodeEvent implements ZnodeEvent {
             String localfile = resourcePath + "/"+ fileName;
             FileUtil.write( localfile,StringUtil.trans(String.valueOf(content)));;
             Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
-            Load.setConf(fileName, returnMap);
+            Load.setConf(fileName, returnMap, confInstance, false);
         } catch (Exception e){
             log.error("添加配置失败，path={},content={}", path, content, e);
             return false;
@@ -87,8 +93,15 @@ public class DefaultZnodeEvent implements ZnodeEvent {
      */
     @Override
     public boolean delNode(String path) {
-        String[] pathSplit = path.split("/");
-        FileUtil.deleteEveryThing(resourcePath + "/"+ pathSplit[pathSplit.length-1]);
+        try{
+            String[] pathSplit = path.split("/");
+            String fileName = pathSplit[pathSplit.length-1];
+            FileUtil.deleteEveryThing(resourcePath + "/"+ pathSplit[pathSplit.length-1]);
+            Load.setConf(fileName, null, confInstance, true);
+        } catch (Exception e){
+            log.error("删除配置失败，path={}", path, e);
+            return false;
+        }
         return true;
     }
 
@@ -107,7 +120,7 @@ public class DefaultZnodeEvent implements ZnodeEvent {
             String localfile = resourcePath + "/"+ fileName;
             FileUtil.write( localfile, StringUtil.trans(String.valueOf(content)));
             Map<String, Object> returnMap = PropertiesUtil.GetAllProperties(localfile);
-            Load.setConf(fileName, returnMap);//此处需解决从spring中获取对象
+            Load.setConf(fileName, returnMap, confInstance,false);//此处需解决从spring中获取对象
         } catch (Exception e){
             log.error("更新配置失败，path={},content={}", path, content, e);
             return false;

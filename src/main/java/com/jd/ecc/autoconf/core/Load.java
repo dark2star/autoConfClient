@@ -1,4 +1,4 @@
-package com.jd.ecc.autoconf.http;
+package com.jd.ecc.autoconf.core;
 
 import com.jd.ecc.autoconf.annotation.*;
 import com.jd.ecc.autoconf.util.Common;
@@ -23,23 +23,6 @@ public class Load {
     protected static final Logger log = LoggerFactory.getLogger(Load.class);
 
     private Load(){}
-
-    //private static final Map<String, List<AutoConfField>> confClassMap = new HashMap<String, List<AutoConfField>>();
-
- /*   public static void initScan(String sapceName) throws ClassNotFoundException, IOException {
-        ClasspathPackageScanner scan = new ClasspathPackageScanner(sapceName);
-        List<String> list = scan.getFullyQualifiedClassNameList();
-        for (String str : list) {
-            Class cs = Class.forName(str);
-            AutoConfFile acf = (AutoConfFile) cs.getAnnotation(AutoConfFile.class);
-            if (acf == null) {
-                continue;
-            }
-            Parent c = new Parent(cs);
-            List<AutoConfField> autoConfFieldList = c.init();//获取泛型中类里面的注解
-            confClassMap.put(acf.filename(), autoConfFieldList);
-        }
-    }*/
 
     private static final Map<String, AutoConfClass> confClazzMap = new HashMap<String, AutoConfClass>();
 
@@ -105,48 +88,6 @@ public class Load {
         }
     }
 
-/*    public static void setConf2(String fileName, Map<String, Object> confMap, ConfInstance ci) throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
-        AutoConfClass acc = null;
-        if(fileName.contains(platformFlag)){//租户文件变动
-            String prefix = fileName.substring(0, fileName.indexOf(platformFlag) + platformFlag.length());
-            String lastfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-            fileName = prefix + platformStr +lastfix;
-            acc = confClazzMap.get(fileName);
-        } else {
-            acc = confClazzMap.get(fileName);
-        }
-        if(acc == null){
-            return;
-        }
-        List<AutoConfField> autoConfFieldList = acc.getConfClassList();
-        Object obj = ci.getConfInstance(acc.getClassName());//为spring特有
-        for(AutoConfField acf : autoConfFieldList){
-            Object value = confMap.get(acf.getMeta().key());
-            Class type = acf.getType();
-            Field field = acf.getField();
-            if(value != null){
-                if(type == int.class || type == Integer.class){
-                    field.set(obj, Integer.valueOf(String.valueOf(value)));
-                } else if(type == long.class || type == Long.class){
-                    field.set(obj, Long.valueOf(String.valueOf(value)));
-                } else if(type == float.class || type == Float.class){
-                    field.set(obj, Float.valueOf(String.valueOf(value)));
-                } else if(type == double.class || type == Double.class){
-                    field.set(obj, Double.valueOf(String.valueOf(value)));
-                } else {
-                    field.set(obj, value);
-                }
-            } else {//此处是为了防止用户真的传null，目的是为了替换旧的参数值
-                if(!(type == int.class || type == Integer.class || type == long.class || type == Long.class || type == float.class || type == Float.class || type == double.class || type == Double.class)){
-                    field.set(obj, value);
-                }
-            }
-        }
-
-        ci.afterDataChange(obj);
-    }*/
-
-
     /**
      * 设置注解变量
      * @param fileName
@@ -158,16 +99,8 @@ public class Load {
      * @throws InvocationTargetException
      */
     public static void setConf(String fileName, Map<String, Object> confMap, ConfInstance ci, boolean isDelete) throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
-        AutoConfClass acc = null;
-        String tagName = null;
-        if(fileName.contains(Common.PLATFORMFLAG)){//租户文件变动
-            String prefix = fileName.substring(0, fileName.indexOf(Common.PLATFORMFLAG) + Common.PLATFORMFLAG.length());
-            String lastfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-            tagName = prefix + Common.PLATFORMSTR +lastfix;
-            acc = confClazzMap.get(tagName);
-        } else {
-            acc = confClazzMap.get(fileName);
-        }
+        String tagName = Manager.getTagName(fileName);
+        AutoConfClass acc = confClazzMap.get(tagName);
         if(acc == null){
             return;
         }
@@ -227,16 +160,8 @@ public class Load {
      * @throws InvocationTargetException
      */
     public static void setConf(String fileName, Map<String, Object> confMap) throws IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
-        AutoConfClass acc = null;
-        String tagName = null;
-        if(fileName.contains(Common.PLATFORMFLAG)){//租户文件变动
-            String prefix = fileName.substring(0, fileName.indexOf(Common.PLATFORMFLAG) + Common.PLATFORMFLAG.length());
-            String lastfix = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-            tagName = prefix + Common.PLATFORMSTR +lastfix;
-            acc = confClazzMap.get(tagName);
-        } else {
-            acc = confClazzMap.get(fileName);
-        }
+        String tagName = Manager.getTagName(fileName);
+        AutoConfClass acc = confClazzMap.get(tagName);
         if(acc == null){
             return;
         }

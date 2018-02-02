@@ -1,6 +1,7 @@
 package com.jd.ecc.autoconf.entity;
 
 /**
+ * 配置存储对象
  * Created by wangwenhao on 2018/1/23.
  */
 public class ConfData {
@@ -9,6 +10,14 @@ public class ConfData {
     private byte[] data;
     private String content;
     private int version;
+
+    public ConfData(){}
+
+    public ConfData(String name, String content, int version) {
+        this.name = name;
+        this.content = content;
+        this.version = version;
+    }
 
     public String getName() {
         return name;

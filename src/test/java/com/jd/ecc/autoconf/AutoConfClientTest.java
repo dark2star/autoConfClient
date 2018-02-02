@@ -1,7 +1,7 @@
 package com.jd.ecc.autoconf;
 
-import com.jd.ecc.autoconf.http.AutoConfClient;
-import com.jd.ecc.autoconf.http.DefaultZnodeEvent;
+import com.jd.ecc.autoconf.core.AutoConfClient;
+import com.jd.ecc.autoconf.core.DefaultZnodeEvent;
 import com.jd.ecc.autoconf.util.Common;
 import org.junit.Test;
 
@@ -36,13 +36,15 @@ public class AutoConfClientTest {
             System.out.println(str);
         }*/
 
-        String host = "http://192.168.171.124:18902";
+        String host = "ws://192.168.171.124:18902/webSocketServer";
         //String host = "http://192.168.171.125:18902";
-        String path = "/demo_1_dev/";
+        String path = "demo_1_dev";
         String key = "test";
-        AutoConfClient autoConfClient = AutoConfClient.buildAutoConfClient(new DefaultZnodeEvent(), "com.jd.ecc.autoconf");
-        autoConfClient.setWatch(host, path, key, Common.GETCONFTIME);
+        //AutoConfClient autoConfClient = AutoConfClient.buildAutoConfClient(new DefaultZnodeEvent(), "com.jd.ecc.autoconf");
+        //autoConfClient.setWatch(host, path, key, Common.GETCONFTIME);
 
+        AutoConfClient autoConfClient = AutoConfClient.buildAutoConfClient("com.jd.ecc.autoconf");
+        autoConfClient.doJob(host, path, key, Common.GETCONFTIME, new DefaultZnodeEvent());
         /**
          * 模拟其他的线程调用
          */
